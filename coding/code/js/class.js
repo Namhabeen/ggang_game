@@ -4,6 +4,7 @@ class Hero{
 		this.movex = 0;
 		this.speed = 11;
         this.direction = 'right';
+		this.attackDamage = 1000;
 	}
 	keyMotion(){
 		if(key.keyDown['left']){
@@ -99,6 +100,7 @@ class Bullet{
 				if(bulletComProp.arr[i] === this){
 					bulletComProp.arr.splice(i,1);
 					this.el.remove();
+					monster.updateHp();
 				}
 			}
 		}
@@ -116,18 +118,26 @@ class Bullet{
 }
 
 class Monster{
-    constructor(){
+    constructor(positionX, hp){
         this.parentNode = document.querySelector('.game');
         this.el = document.createElement('div');
         this.el.className = 'monster_box';
         this.elChildren = document.createElement('div');
         this.elChildren.className = 'monster';
+		this.hpNode = document.createElement('div');
+		this.hpNode.className = 'hp';
+		this.hpValue = hp;
+		this.hpTextNode = document.createTextNode(this.hpValue);
+		this.positionX = positionX;
         this.init();
     }
 	
     init(){
+		this.hpNode.appendChild(this.hpTextNode);
+		this.el.appendChild(this.hpNode);
         this.el.appendChild(this.elChildren);
         this.parentNode.appendChild(this.el);
+		this.el.style.left = this.positionX + 'px';
     }
 	position(){
 		return{
@@ -136,6 +146,10 @@ class Monster{
 			top: gameProp.screenHeight - this.el.getBoundingClientRect().top,
 			bottom: gameProp.screenHeight - this.el.getBoundingClientRect().top - this.el.getBoundingClientRect().height
 		}
+	}
+	updateHp(){
+		this.hpValue = Math.max(0,this.hpValue - hero.attackDamage);
+		this.el.children[0].innerText = this.hpValue;
 	}
 }
 
