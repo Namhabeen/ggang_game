@@ -126,3 +126,8 @@
     text-align:center;
     transform: translateY(-100%);
 }
+
+.remove{
+    opacity: 0;
+    transition: opacity .2s;
+}

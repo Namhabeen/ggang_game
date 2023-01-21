@@ -95,15 +95,18 @@ class Bullet{
 	}
     crashBullet(){
 		//수리검과 몬스터 충돌시 
-		if(this.position().left > monster.position().left && this.position().right < monster.position().right){
-			for(let i=0; i < bulletComProp.arr.length; i++){
-				if(bulletComProp.arr[i] === this){
-					bulletComProp.arr.splice(i,1);
-					this.el.remove();
-					monster.updateHp();
+		for(let j=0; j < allMonsterComProp.arr.length; j++){
+			if(this.position().left > allMonsterComProp.arr[j].position().left && this.position().right < allMonsterComProp.arr[j].position().right){
+				for(let i=0; i < bulletComProp.arr.length; i++){
+					if(bulletComProp.arr[i] === this){
+						bulletComProp.arr.splice(i,1);
+						this.el.remove();
+						allMonsterComProp.arr[j].updateHp(j);
+					}
 				}
 			}
 		}
+		
 		//수리검 화면 벗어나는 경우
         if(this.position().left > gameProp.screenWidth || this.position.right < 0){
 			for(let i=0; i < bulletComProp.arr.length; i++){
@@ -147,9 +150,17 @@ class Monster{
 			bottom: gameProp.screenHeight - this.el.getBoundingClientRect().top - this.el.getBoundingClientRect().height
 		}
 	}
-	updateHp(){
+	updateHp(index){
 		this.hpValue = Math.max(0,this.hpValue - hero.attackDamage);
 		this.el.children[0].innerText = this.hpValue;
+		if(this.hpValue === 0){
+			this.dead(index);
+		}
+	}
+	dead(index){
+		this.el.classList.add('remove');
+		setTimeout(() => this.el.remove(), 200);
+		allMonsterComProp.arr.splice(index,1);
 	}
 }
 

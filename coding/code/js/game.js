@@ -7,6 +7,11 @@ const key = {
     }
 }
 
+//몬스터 관리 배열
+const allMonsterComProp = {
+    arr: []
+}
+
 //수리검 객체 배열
 const bulletComProp = {
     launch: false,
@@ -67,11 +72,12 @@ const setGameBackground = () => {
 
 //새 히어로 객체 생성
 let hero;
-//새 몬스터 객체 생성
-let monster;
+
 const init = () => {
     hero = new Hero('.hero'); 
-    monster = new Monster(500, 9000);
+    allMonsterComProp.arr[0] = new Monster(700, 7777);
+    allMonsterComProp.arr[1] = new Monster(1200, 2222);
+
     loadImg();
     renderGame();
     windowEvent();
