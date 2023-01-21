@@ -130,13 +130,17 @@ class Monster{
 		this.hpNode = document.createElement('div');
 		this.hpNode.className = 'hp';
 		this.hpValue = hp;
-		this.hpTextNode = document.createTextNode(this.hpValue);
+		this.defaultHpValue = hp;
+		this.hpInner = document.createElement('span');
+		this.progress = 0;
 		this.positionX = positionX;
+		this.moveX = 0;
+		this.speed = 10;
         this.init();
     }
 	
     init(){
-		this.hpNode.appendChild(this.hpTextNode);
+		this.hpNode.appendChild(this.hpInner);
 		this.el.appendChild(this.hpNode);
         this.el.appendChild(this.elChildren);
         this.parentNode.appendChild(this.el);
@@ -152,7 +156,8 @@ class Monster{
 	}
 	updateHp(index){
 		this.hpValue = Math.max(0,this.hpValue - hero.attackDamage);
-		this.el.children[0].innerText = this.hpValue;
+		this.progress = this.hpValue/this.defaultHpValue * 100;
+		this.el.children[0].children[0].style.width = this.progress+'%';
 		if(this.hpValue === 0){
 			this.dead(index);
 		}
@@ -161,6 +166,14 @@ class Monster{
 		this.el.classList.add('remove');
 		setTimeout(() => this.el.remove(), 200);
 		allMonsterComProp.arr.splice(index,1);
+	}
+	moveMonster(){
+		if(this.moveX+this.positionX + this.el.offsetWidth + hero.position().left - hero.movex <= 0){
+			this.moveX = hero.movex - this.positionX + gameProp.screenWidth - hero.position().left;
+		}else{
+			this.moveX -= this.speed;
+		}
+		this.el.style.transform = `translateX(${this.moveX}px)`;
 	}
 }
 

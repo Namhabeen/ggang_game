@@ -58,8 +58,13 @@ const loadImg = () => {
 const renderGame = () => {
     hero.keyMotion();
     setGameBackground();
+    //수리검 이동
     bulletComProp.arr.forEach((arr,i) => {
         arr.moveBullet();
+    });
+    //몬스터 이동
+    allMonsterComProp.arr.forEach((arr,i)=> {
+        arr.moveMonster();
     });
     window.requestAnimationFrame(renderGame);
 }
