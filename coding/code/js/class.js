@@ -93,7 +93,23 @@ class Bullet{
 		}
 	}
     crashBullet(){
+		//수리검과 몬스터 충돌시 
+		if(this.position().left > monster.position().left && this.position().right < monster.position().right){
+			for(let i=0; i < bulletComProp.arr.length; i++){
+				if(bulletComProp.arr[i] === this){
+					bulletComProp.arr.splice(i,1);
+					this.el.remove();
+				}
+			}
+		}
+		//수리검 화면 벗어나는 경우
         if(this.position().left > gameProp.screenWidth || this.position.right < 0){
+			for(let i=0; i < bulletComProp.arr.length; i++){
+				if(bulletComProp.arr[i] === this){
+					bulletComProp.arr.splice(i,1);
+					this.el.remove();
+				}
+			}
             this.el.remove();
         }
     }
@@ -108,10 +124,19 @@ class Monster{
         this.elChildren.className = 'monster';
         this.init();
     }
+	
     init(){
-        this.elappendChild(this.elChildren);
+        this.el.appendChild(this.elChildren);
         this.parentNode.appendChild(this.el);
     }
+	position(){
+		return{
+			left: this.el.getBoundingClientRect().left,
+			right: this.el.getBoundingClientRect().right,
+			top: gameProp.screenHeight - this.el.getBoundingClientRect().top,
+			bottom: gameProp.screenHeight - this.el.getBoundingClientRect().top - this.el.getBoundingClientRect().height
+		}
+	}
 }
 
 
