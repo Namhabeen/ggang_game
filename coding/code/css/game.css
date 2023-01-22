@@ -45,6 +45,11 @@
     to {background-position-x: -1498px;}
 }
 
+@keyframes hero_crash  {
+    from {background-position-x: 0;}
+    to {background-position-x: -299px;}
+}
+
 .hero_box{
     position: fixed;
     left: 0;
@@ -64,6 +69,19 @@
     background-image: url('../../../lib/images/ninja_idle.png');
     background-size: 1498px 182px;
     animation: hero_idle 0.7s infinite steps(10);
+}
+
+.hero_box .crash{
+    background-image: url('../../../lib/images/ninja_crash.png');
+    background-size: 299px 182px;
+    animation: hero_crash 0.4s 1 steps(2);
+}
+
+.hero_box .dead{
+    background-image: url('../../../lib/images/ninja_dead.png');
+    background-size: 150px 182px;
+    animation: none;
+    transform: rotate(100deg);
 }
 
 .hero_box .run, .hero_box .hero .hero .run .attack{
@@ -178,4 +196,28 @@
     height: 100%;
     background-color: red;
     transition: width .3s linear;
+}
+
+.game_over{
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 200;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,.5);
+}
+
+.game_over.active{
+    display: block;
+}
+
+.game_over p{
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 150px;
 }

@@ -60,6 +60,18 @@ class Hero{
 		this.hpProgress = this.hpValue / this.defaultHpValue * 100;
 		const heroHpBox = document.querySelector('.state_box .hp span');
 		heroHpBox.style.width = this.hpProgress + '%';
+		this.crash();
+		if(this.hpValue === 0){
+			this.dead();
+		}
+	}
+	crash(){
+		this.el.classList.add('crash');
+		setTimeout(() => this.el.classList.remove('crash'),400);
+	}
+	dead(){
+		hero.el.classList.add('dead');
+		endGame();
 	}
 }
 
@@ -145,7 +157,7 @@ class Monster{
 		this.positionX = positionX;
 		this.moveX = 0;
 		this.speed = 10;
-		this.crashDamage = 100;
+		this.crashDamage = 1000;
         this.init();
     }
 	

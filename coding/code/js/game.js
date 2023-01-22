@@ -26,13 +26,14 @@ const gameBackground = {
 //자주 쓰는 값 별도 지정
 const gameProp = {
     screenWidth : window.innerWidth,
-    screenHeight : window.innerHeight
+    screenHeight : window.innerHeight,
+    gameOver: false
 }
 
 //키 이벤트 발생
 const windowEvent = () => {
     window.addEventListener('keydown', e => {
-        key.keyDown[key.keyValue[e.keyCode]] = true;
+        if(!gameProp.gameOver) key.keyDown[key.keyValue[e.keyCode]] = true;
     });
     window.addEventListener('keyup',  e => {
         key.keyDown[key.keyValue[e.keyCode]] = false;
@@ -67,6 +68,14 @@ const renderGame = () => {
         arr.moveMonster();
     });
     window.requestAnimationFrame(renderGame);
+}
+
+//게임 종료 함수
+const endGame = () => {
+    key.keyDown.left = false;
+    key.keyDown.right = false;
+    gameProp.gameOver = true;
+    document.querySelector('.game_over').classList.add('active');
 }
 
 //백그라운드 패럴럭스
