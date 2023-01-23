@@ -23,6 +23,23 @@ const gameBackground = {
     gameBox: document.querySelector('.game')
 }
 
+//스테이지 관리 오브젝트
+const stageInfo = {
+    stage: [],
+    totalScore:0,
+    monster:[
+        {defaultMon: greenMon, bossMon: greenMonBoss},
+        {defaultMon: yellowMon, bossMon: greenMonBoss},
+        {defaultMon: pinkMon, bossMon: greenMonBoss},
+        {defaultMon: greenMon, bossMon: yellowMonBoss},
+        {defaultMon: yellowMon, bossMon: yellowMonBoss},
+        {defaultMon: pinkMon, bossMon: yellowMonBoss},
+        {defaultMon: greenMon, bossMon: pinkMonBoss},
+        {defaultMon: yellowMon, bossMon: pinkMonBoss},
+        {defaultMon: pinkMon, bossMon: pinkMonBoss}
+    ]
+}
+
 //자주 쓰는 값 별도 지정
 const gameProp = {
     screenWidth : window.innerWidth,
@@ -67,6 +84,7 @@ const renderGame = () => {
     allMonsterComProp.arr.forEach((arr,i)=> {
         arr.moveMonster();
     });
+    stageInfo.stage.clearCheck();
     window.requestAnimationFrame(renderGame);
 }
 
@@ -89,8 +107,7 @@ let hero;
 
 const init = () => {
     hero = new Hero('.hero'); 
-    allMonsterComProp.arr[0] = new Monster(700, 7777);
-    allMonsterComProp.arr[1] = new Monster(1200, 2222);
+    stageInfo.stage = new Stage();
 
     loadImg();
     renderGame();
