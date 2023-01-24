@@ -50,6 +50,11 @@
     to {background-position-x: -299px;}
 }
 
+@keyframes hero_slide {
+    from {background-position: 0;}
+    to {background-position: -1498px;}
+}
+
 .hero_box{
     position: fixed;
     left: 0;
@@ -96,6 +101,12 @@
     background-image: url('../../../lib/images/ninja_attack.png');
     background-size: 1498px 182px;
     animation: hero_attack 0.7s 1 steps(10);
+}
+
+.hero_box .slide{
+    background-image: url('../../../lib/images/ninja_slide.png');
+    background-size: 1498px 182px;
+    animation: hero_slide 0.7s 1 steps(10);
 }
 
 .hero_bullet {

@@ -3,7 +3,8 @@ const key = {
     keyValue : {
         37: 'left', //좌로 달리기 x
         39: 'right', //우로 달리기
-        88: 'attack' //공격
+        88: 'attack', //공격
+        67: 'slide' //슬라이드
     }
 }
 
