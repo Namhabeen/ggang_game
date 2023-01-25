@@ -33,7 +33,7 @@ class Stage{
 	clearCheck(){
 		stageInfo.callPosition.forEach( arr => {
 			if(hero.movex >= arr && allMonsterComProp.arr.length === 0){
-				this.stageGuide("곧 몬스터가 몰려옵니다!");
+				this.stageGuide(`STAGE LEVEL${this.level+1}`);
 				stageInfo.callPosition.shift();
 				setTimeout(() => {
 					this.callMonster();
