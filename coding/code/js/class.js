@@ -33,7 +33,7 @@ class Stage{
 	clearCheck(){
 		stageInfo.callPosition.forEach( arr => {
 			if(hero.movex >= arr && allMonsterComProp.arr.length === 0){
-				this.stageGuide(`STAGE IS COMMING SOON...!`);
+				this.stageGuide("꺄아아아아아아악");
 				stageInfo.callPosition.shift();
 				setTimeout(() => {
 					this.callMonster();
