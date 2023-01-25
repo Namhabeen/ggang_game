@@ -7,7 +7,7 @@ class Stage{
 	// stageStart(){
 	// 	setTimeout( ()=> {
 	// 		this.isStart = true;
-	// 		this.stageGuide(`STAGE LEVEL${this.level+1}`);
+	// 		this.stageGuide(`STAGE IS COMMING...!`);
 	// 		this.callMonster();
 	// 	},2000);
 	// }
@@ -33,7 +33,7 @@ class Stage{
 	clearCheck(){
 		stageInfo.callPosition.forEach( arr => {
 			if(hero.movex >= arr && allMonsterComProp.arr.length === 0){
-				this.stageGuide(`STAGE LEVEL${this.level+1}`);
+				this.stageGuide(`STAGE IS COMMING SOON...!`);
 				stageInfo.callPosition.shift();
 				setTimeout(() => {
 					this.callMonster();
