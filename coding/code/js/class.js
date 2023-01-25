@@ -2,15 +2,15 @@ class Stage{
 	constructor(){
 		this.level = 0;
 		this.isStart = false;
-		this.stageStart();
+		//this.stageStart();
 	}
-	stageStart(){
-		setTimeout( ()=> {
-			this.isStart = true;
-			this.stageGuide(`STAGE LEVEL${this.level+1}`);
-			this.callMonster();
-		},2000);
-	}
+	// stageStart(){
+	// 	setTimeout( ()=> {
+	// 		this.isStart = true;
+	// 		this.stageGuide(`STAGE LEVEL${this.level+1}`);
+	// 		this.callMonster();
+	// 	},2000);
+	// }
 	stageGuide(text){
 		this.parentNode = document.querySelector('.game_app');
 		this.textBox = document.createElement('div');
@@ -31,17 +31,27 @@ class Stage{
 		}	
 	}
 	clearCheck(){
-		if(allMonsterComProp.arr.length === 0 && this.isStart){
-			this.level++;
-			this.isStart = false;
-			if(this.level < stageInfo.monster.length){
-				this.stageGuide('STAGE CLEAR');
-				this.stageStart();
-				hero.heroUpgrade();
-			}else{
-				this.stageGuide('ALL CLEAR');
+		stageInfo.callPosition.forEach( arr => {
+			if(hero.movex >= arr && allMonsterComProp.arr.length === 0){
+				this.stageGuide("곧 몬스터가 몰려옵니다!");
+				stageInfo.callPosition.shift();
+				setTimeout(() => {
+					this.callMonster();
+					this.level++;
+				}, 1000);
 			}
-		}
+		});
+		// if(allMonsterComProp.arr.length === 0 && this.isStart){
+		// 	this.level++;
+		// 	this.isStart = false;
+		// 	if(this.level < stageInfo.monster.length){
+		// 		this.stageGuide('STAGE CLEAR');
+		// 		this.stageStart();
+		// 		hero.heroUpgrade();
+		// 	}else{
+		// 		this.stageGuide('ALL CLEAR');
+		// 	}
+		// }
 	}
 }
 
@@ -51,7 +61,7 @@ class Hero{
 		this.movex = 0;
 		this.speed = 11;
         this.direction = 'right';
-		this.attackDamage = 2000;
+		this.attackDamage = 1800;
 		this.hpProgress = 0;
 		this.hpValue = 100000;
 		this.defaultHpValue = this.hpValue;
@@ -60,6 +70,10 @@ class Hero{
 		this.slideTime = 0;
 		this.slideMaxTime = 30;
 		this.slideDown = false;
+		this.level = 1;
+		this.exp = 0;
+		this.maxExp = 1000;
+		this.expProgress = 0;
 	}
 	keyMotion(){
 		if(key.keyDown['left']){
@@ -130,15 +144,22 @@ class Hero{
 			height: this.el.offsetHeight
 		}
 	}
-	updateHp(monsterDamage){
+	minusHp(monsterDamage){
 		this.hpValue = Math.max(0,this.hpValue - monsterDamage);
-		this.hpProgress = this.hpValue / this.defaultHpValue * 100;
-		const heroHpBox = document.querySelector('.state_box .hp span');
-		heroHpBox.style.width = this.hpProgress + '%';
 		this.crash();
 		if(this.hpValue === 0){
 			this.dead();
 		}
+		this.renderHp();
+	}
+	pluseHp(hp){
+		this.hpValue = hp;
+		this.renderHp();
+	}
+	renderHp(){
+		this.hpProgress = this.hpValue / this.defaultHpValue * 100;
+		const heroHpBox = document.querySelector('.state_box .hp span');
+		heroHpBox.style.width = this.hpProgress + '%';
 	}
 	crash(){
 		this.el.classList.add('crash');
@@ -154,6 +175,27 @@ class Hero{
 	heroUpgrade(){
 		this.speed += 1.3;
 		this.attackDamage += 150;
+	}
+	updateExp(exp){
+		this.exp += exp;
+		this.expProgress = this.exp / this.maxExp * 100;
+		document.querySelector('.hero_state .exp span').style.width = this.expProgress + '%';
+		if(this.exp >= this.maxExp){
+			this.levelUp();
+		}
+	}
+	levelUp(){
+		this.level+=1;
+		this.exp = 0;
+		this.maxExp = this.maxExp + this.level * 200;
+		document.querySelector('.level_box strong').innerText = this.level;
+		const levelGuide = document.querySelector('.hero_box .level_up');
+		levelGuide.classList.add('active');
+
+		setTimeout(() => levelGuide.classList.remove('active'),1000);
+		this.updateExp(this.exp);
+		this.heroUpgrade();
+		this.pluseHp(this.defaultHpValue);
 	}
 }
 
@@ -257,6 +299,8 @@ class Monster{
 		this.speed = property.speed;
 		this.crashDamage = property.crashDamage;
 		this.score = property.score;
+		this.exp = property.exp;
+
         this.init();
     }
 	
@@ -288,6 +332,7 @@ class Monster{
 		setTimeout(() => this.el.remove(), 200);
 		allMonsterComProp.arr.splice(index,1);
 		this.setScore();
+		this.setExp();
 	}
 	moveMonster(){
 		if(this.moveX+this.positionX + this.el.offsetWidth + hero.position().left - hero.movex <= 0){
@@ -302,12 +347,15 @@ class Monster{
 		let rightDiff = 30;
 		let leftDiff = 90;
 		if(hero.position().right - rightDiff > this.position().left && hero.position().left + leftDiff < this.position().right){
-			hero.updateHp(this.crashDamage);
+			hero.minusHp(this.crashDamage);
 		}
 	}
 	setScore(){
 		stageInfo.totalScore += this.score;
 		document.querySelector('.score_box').innerText = stageInfo.totalScore;
+	}
+	setExp(){
+		hero.updateExp(this.exp);
 	}
 }
 

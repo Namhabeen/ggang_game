@@ -30,15 +30,10 @@ const stageInfo = {
     totalScore:0,
     monster:[
         {defaultMon: greenMon, bossMon: greenMonBoss},
-        {defaultMon: yellowMon, bossMon: greenMonBoss},
-        {defaultMon: pinkMon, bossMon: greenMonBoss},
-        {defaultMon: greenMon, bossMon: yellowMonBoss},
         {defaultMon: yellowMon, bossMon: yellowMonBoss},
-        {defaultMon: pinkMon, bossMon: yellowMonBoss},
-        {defaultMon: greenMon, bossMon: pinkMonBoss},
-        {defaultMon: yellowMon, bossMon: pinkMonBoss},
         {defaultMon: pinkMon, bossMon: pinkMonBoss}
-    ]
+    ],
+    callPosition: [1000, 5000, 9000]
 }
 
 //자주 쓰는 값 별도 지정
